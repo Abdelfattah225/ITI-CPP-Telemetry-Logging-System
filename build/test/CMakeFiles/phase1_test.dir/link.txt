@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/phase1_test.dir/phase1.cpp.o -o phase1_test  ../src/liblogging.a 

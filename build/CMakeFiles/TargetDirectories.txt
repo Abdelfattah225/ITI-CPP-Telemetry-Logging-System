@@ -1,0 +1,11 @@
+/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles/edit_cache.dir
+/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles/rebuild_cache.dir
+/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/src/CMakeFiles/logging.dir
+/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/src/CMakeFiles/edit_cache.dir
+/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/src/CMakeFiles/rebuild_cache.dir
+/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/app/CMakeFiles/logging_app.dir
+/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/app/CMakeFiles/edit_cache.dir
+/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/app/CMakeFiles/rebuild_cache.dir
+/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/test/CMakeFiles/phase1_test.dir
+/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/test/CMakeFiles/edit_cache.dir
+/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/test/CMakeFiles/rebuild_cache.dir

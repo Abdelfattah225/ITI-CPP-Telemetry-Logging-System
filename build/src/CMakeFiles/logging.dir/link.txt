@@ -1,0 +1,2 @@
+/usr/bin/ar qc liblogging.a CMakeFiles/logging.dir/logging/ConsoleSinkImpl.cpp.o CMakeFiles/logging.dir/logging/FileSinkImpl.cpp.o CMakeFiles/logging.dir/logging/LogManager.cpp.o
+/usr/bin/ranlib liblogging.a

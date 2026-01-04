@@ -1,0 +1,12 @@
+[2026-01-04 12:53:26] [CPU] [Navigation] [INFO] Payload value is: 15%
+[2026-01-04 12:53:26] [RAM] [Bluetooth] [WARN] Payload value is: 50%
+[2026-01-04 12:53:26] [GPU] [MediaPlayer] [CRITICAL] Payload value is: 90%
+[2026-01-04 12:53:38] [CPU] [Navigation] [INFO] Payload value is: 15%
+[2026-01-04 12:53:38] [RAM] [Bluetooth] [WARN] Payload value is: 50%
+[2026-01-04 12:53:38] [GPU] [MediaPlayer] [CRITICAL] Payload value is: 90%
+[2026-01-04 12:53:40] [CPU] [Navigation] [INFO] Payload value is: 15%
+[2026-01-04 12:53:40] [RAM] [Bluetooth] [WARN] Payload value is: 50%
+[2026-01-04 12:53:40] [GPU] [MediaPlayer] [CRITICAL] Payload value is: 90%
+[2026-01-04 12:53:42] [CPU] [Navigation] [INFO] Payload value is: 15%
+[2026-01-04 12:53:42] [RAM] [Bluetooth] [WARN] Payload value is: 50%
+[2026-01-04 12:53:42] [GPU] [MediaPlayer] [CRITICAL] Payload value is: 90%
