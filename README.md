@@ -114,7 +114,7 @@ project/
 
 ## Phase Documentation
 
-- [Phase 1: Core Synchronous Logging Foundation](docs/phase1/README.md)
+- [Phase 1: Core Synchronous Logging Foundation](docs/01-Core-Synchronous-Logging-Foundation/README.md)
 
 #
 
