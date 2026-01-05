@@ -1,0 +1,3 @@
+/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/_deps/googletest-subbuild/CMakeFiles/googletest-populate.dir
+/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/_deps/googletest-subbuild/CMakeFiles/edit_cache.dir
+/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/_deps/googletest-subbuild/CMakeFiles/rebuild_cache.dir

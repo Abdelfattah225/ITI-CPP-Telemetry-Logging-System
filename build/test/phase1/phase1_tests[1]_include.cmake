@@ -1,0 +1,5 @@
+if(EXISTS "/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/test/phase1/phase1_tests[1]_tests.cmake")
+  include("/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/test/phase1/phase1_tests[1]_tests.cmake")
+else()
+  add_test(phase1_tests_NOT_BUILT phase1_tests_NOT_BUILT)
+endif()

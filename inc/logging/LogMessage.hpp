@@ -98,8 +98,8 @@ namespace logging
 
     public:
         LogMessage() = delete;
-        LogMessage(std::string application_name, Context cxt, uint8_t Payload) : app_name{application_name}, context{cxt}, payload{Payload}
-        {
+            LogMessage(std::string application_name, Context cxt, uint8_t Payload) : app_name{application_name}, context{cxt}, payload{Payload}
+            {
             // determine which serverity based on payload
             AssignSeverity();
             time = std::chrono::system_clock::now();

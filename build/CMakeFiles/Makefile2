@@ -65,20 +65,71 @@ CMAKE_BINARY_DIR = /home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_L
 # The main recursive "all" target.
 all: src/all
 all: app/all
-all: test/all
+all: test/phase1/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
 preinstall: src/preinstall
 preinstall: app/preinstall
-preinstall: test/preinstall
+preinstall: test/phase1/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
 clean: src/clean
 clean: app/clean
-clean: test/clean
+clean: test/phase1/clean
 .PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory _deps/googletest-build
+
+# Recursive "all" directory target.
+_deps/googletest-build/all: _deps/googletest-build/googlemock/all
+.PHONY : _deps/googletest-build/all
+
+# Recursive "preinstall" directory target.
+_deps/googletest-build/preinstall: _deps/googletest-build/googlemock/preinstall
+.PHONY : _deps/googletest-build/preinstall
+
+# Recursive "clean" directory target.
+_deps/googletest-build/clean: _deps/googletest-build/googlemock/clean
+.PHONY : _deps/googletest-build/clean
+
+#=============================================================================
+# Directory level rules for directory _deps/googletest-build/googlemock
+
+# Recursive "all" directory target.
+_deps/googletest-build/googlemock/all: _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/all
+_deps/googletest-build/googlemock/all: _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/all
+_deps/googletest-build/googlemock/all: _deps/googletest-build/googletest/all
+.PHONY : _deps/googletest-build/googlemock/all
+
+# Recursive "preinstall" directory target.
+_deps/googletest-build/googlemock/preinstall: _deps/googletest-build/googletest/preinstall
+.PHONY : _deps/googletest-build/googlemock/preinstall
+
+# Recursive "clean" directory target.
+_deps/googletest-build/googlemock/clean: _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/clean
+_deps/googletest-build/googlemock/clean: _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/clean
+_deps/googletest-build/googlemock/clean: _deps/googletest-build/googletest/clean
+.PHONY : _deps/googletest-build/googlemock/clean
+
+#=============================================================================
+# Directory level rules for directory _deps/googletest-build/googletest
+
+# Recursive "all" directory target.
+_deps/googletest-build/googletest/all: _deps/googletest-build/googletest/CMakeFiles/gtest.dir/all
+_deps/googletest-build/googletest/all: _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/all
+.PHONY : _deps/googletest-build/googletest/all
+
+# Recursive "preinstall" directory target.
+_deps/googletest-build/googletest/preinstall:
+.PHONY : _deps/googletest-build/googletest/preinstall
+
+# Recursive "clean" directory target.
+_deps/googletest-build/googletest/clean: _deps/googletest-build/googletest/CMakeFiles/gtest.dir/clean
+_deps/googletest-build/googletest/clean: _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/clean
+.PHONY : _deps/googletest-build/googletest/clean
 
 #=============================================================================
 # Directory level rules for directory app
@@ -111,19 +162,21 @@ src/clean: src/CMakeFiles/logging.dir/clean
 .PHONY : src/clean
 
 #=============================================================================
-# Directory level rules for directory test
+# Directory level rules for directory test/phase1
 
 # Recursive "all" directory target.
-test/all: test/CMakeFiles/phase1_test.dir/all
-.PHONY : test/all
+test/phase1/all: test/phase1/CMakeFiles/phase1_tests.dir/all
+test/phase1/all: _deps/googletest-build/all
+.PHONY : test/phase1/all
 
 # Recursive "preinstall" directory target.
-test/preinstall:
-.PHONY : test/preinstall
+test/phase1/preinstall: _deps/googletest-build/preinstall
+.PHONY : test/phase1/preinstall
 
 # Recursive "clean" directory target.
-test/clean: test/CMakeFiles/phase1_test.dir/clean
-.PHONY : test/clean
+test/phase1/clean: test/phase1/CMakeFiles/phase1_tests.dir/clean
+test/phase1/clean: _deps/googletest-build/clean
+.PHONY : test/phase1/clean
 
 #=============================================================================
 # Target rules for target src/CMakeFiles/logging.dir
@@ -132,7 +185,7 @@ test/clean: test/CMakeFiles/phase1_test.dir/clean
 src/CMakeFiles/logging.dir/all:
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/logging.dir/build.make src/CMakeFiles/logging.dir/depend
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/logging.dir/build.make src/CMakeFiles/logging.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles --progress-num=1,2,3,4 "Built target logging"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles --progress-num=9,10,11,12 "Built target logging"
 .PHONY : src/CMakeFiles/logging.dir/all
 
 # Build rule for subdir invocation for target.
@@ -158,7 +211,7 @@ src/CMakeFiles/logging.dir/clean:
 app/CMakeFiles/logging_app.dir/all: src/CMakeFiles/logging.dir/all
 	$(MAKE) $(MAKESILENT) -f app/CMakeFiles/logging_app.dir/build.make app/CMakeFiles/logging_app.dir/depend
 	$(MAKE) $(MAKESILENT) -f app/CMakeFiles/logging_app.dir/build.make app/CMakeFiles/logging_app.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles --progress-num=5,6 "Built target logging_app"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles --progress-num=13,14 "Built target logging_app"
 .PHONY : app/CMakeFiles/logging_app.dir/all
 
 # Build rule for subdir invocation for target.
@@ -178,30 +231,137 @@ app/CMakeFiles/logging_app.dir/clean:
 .PHONY : app/CMakeFiles/logging_app.dir/clean
 
 #=============================================================================
-# Target rules for target test/CMakeFiles/phase1_test.dir
+# Target rules for target test/phase1/CMakeFiles/phase1_tests.dir
 
 # All Build rule for target.
-test/CMakeFiles/phase1_test.dir/all: src/CMakeFiles/logging.dir/all
-	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/phase1_test.dir/build.make test/CMakeFiles/phase1_test.dir/depend
-	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/phase1_test.dir/build.make test/CMakeFiles/phase1_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles --progress-num=7,8 "Built target phase1_test"
-.PHONY : test/CMakeFiles/phase1_test.dir/all
+test/phase1/CMakeFiles/phase1_tests.dir/all: src/CMakeFiles/logging.dir/all
+test/phase1/CMakeFiles/phase1_tests.dir/all: _deps/googletest-build/googletest/CMakeFiles/gtest.dir/all
+test/phase1/CMakeFiles/phase1_tests.dir/all: _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/all
+	$(MAKE) $(MAKESILENT) -f test/phase1/CMakeFiles/phase1_tests.dir/build.make test/phase1/CMakeFiles/phase1_tests.dir/depend
+	$(MAKE) $(MAKESILENT) -f test/phase1/CMakeFiles/phase1_tests.dir/build.make test/phase1/CMakeFiles/phase1_tests.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles --progress-num=15,16,17,18,19 "Built target phase1_tests"
+.PHONY : test/phase1/CMakeFiles/phase1_tests.dir/all
 
 # Build rule for subdir invocation for target.
-test/CMakeFiles/phase1_test.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles 6
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/CMakeFiles/phase1_test.dir/all
+test/phase1/CMakeFiles/phase1_tests.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles 13
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/phase1/CMakeFiles/phase1_tests.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles 0
-.PHONY : test/CMakeFiles/phase1_test.dir/rule
+.PHONY : test/phase1/CMakeFiles/phase1_tests.dir/rule
 
 # Convenience name for target.
-phase1_test: test/CMakeFiles/phase1_test.dir/rule
-.PHONY : phase1_test
+phase1_tests: test/phase1/CMakeFiles/phase1_tests.dir/rule
+.PHONY : phase1_tests
 
 # clean rule for target.
-test/CMakeFiles/phase1_test.dir/clean:
-	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/phase1_test.dir/build.make test/CMakeFiles/phase1_test.dir/clean
-.PHONY : test/CMakeFiles/phase1_test.dir/clean
+test/phase1/CMakeFiles/phase1_tests.dir/clean:
+	$(MAKE) $(MAKESILENT) -f test/phase1/CMakeFiles/phase1_tests.dir/build.make test/phase1/CMakeFiles/phase1_tests.dir/clean
+.PHONY : test/phase1/CMakeFiles/phase1_tests.dir/clean
+
+#=============================================================================
+# Target rules for target _deps/googletest-build/googlemock/CMakeFiles/gmock.dir
+
+# All Build rule for target.
+_deps/googletest-build/googlemock/CMakeFiles/gmock.dir/all: _deps/googletest-build/googletest/CMakeFiles/gtest.dir/all
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/depend
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles --progress-num=1,2 "Built target gmock"
+.PHONY : _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/all
+
+# Build rule for subdir invocation for target.
+_deps/googletest-build/googlemock/CMakeFiles/gmock.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles 4
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles 0
+.PHONY : _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/rule
+
+# Convenience name for target.
+gmock: _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/rule
+.PHONY : gmock
+
+# clean rule for target.
+_deps/googletest-build/googlemock/CMakeFiles/gmock.dir/clean:
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/clean
+.PHONY : _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/clean
+
+#=============================================================================
+# Target rules for target _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir
+
+# All Build rule for target.
+_deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/all: _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/all
+_deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/all: _deps/googletest-build/googletest/CMakeFiles/gtest.dir/all
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/depend
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles --progress-num=3,4 "Built target gmock_main"
+.PHONY : _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/all
+
+# Build rule for subdir invocation for target.
+_deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles 6
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles 0
+.PHONY : _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/rule
+
+# Convenience name for target.
+gmock_main: _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/rule
+.PHONY : gmock_main
+
+# clean rule for target.
+_deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/clean:
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/clean
+.PHONY : _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/clean
+
+#=============================================================================
+# Target rules for target _deps/googletest-build/googletest/CMakeFiles/gtest.dir
+
+# All Build rule for target.
+_deps/googletest-build/googletest/CMakeFiles/gtest.dir/all:
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest.dir/depend
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles --progress-num=5,6 "Built target gtest"
+.PHONY : _deps/googletest-build/googletest/CMakeFiles/gtest.dir/all
+
+# Build rule for subdir invocation for target.
+_deps/googletest-build/googletest/CMakeFiles/gtest.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/googletest-build/googletest/CMakeFiles/gtest.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles 0
+.PHONY : _deps/googletest-build/googletest/CMakeFiles/gtest.dir/rule
+
+# Convenience name for target.
+gtest: _deps/googletest-build/googletest/CMakeFiles/gtest.dir/rule
+.PHONY : gtest
+
+# clean rule for target.
+_deps/googletest-build/googletest/CMakeFiles/gtest.dir/clean:
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest.dir/clean
+.PHONY : _deps/googletest-build/googletest/CMakeFiles/gtest.dir/clean
+
+#=============================================================================
+# Target rules for target _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir
+
+# All Build rule for target.
+_deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/all: _deps/googletest-build/googletest/CMakeFiles/gtest.dir/all
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/depend
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles --progress-num=7,8 "Built target gtest_main"
+.PHONY : _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/all
+
+# Build rule for subdir invocation for target.
+_deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles 4
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/CMakeFiles 0
+.PHONY : _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/rule
+
+# Convenience name for target.
+gtest_main: _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/rule
+.PHONY : gtest_main
+
+# clean rule for target.
+_deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/clean:
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/clean
+.PHONY : _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

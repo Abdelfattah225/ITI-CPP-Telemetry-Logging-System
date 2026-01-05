@@ -54,7 +54,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/test/cmake_install.cmake")
+  include("/home/abdo/ITI/03-Modern_CPP/ITI_Cpp_LogLog_Project/ITI_Cpp_LogLog_Project/build/test/phase1/cmake_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
