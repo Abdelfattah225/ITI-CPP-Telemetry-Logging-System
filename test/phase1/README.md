@@ -84,16 +84,3 @@ cmake --build build
 ## Dependencies
 
 - Google Test (fetched automatically via CMake FetchContent)
-```
-
----
-
-Save this as `test/phase1/README.md`:
-
-```bash
-nano test/phase1/README.md
-```
-
----
-
-Simple and documents everything needed for the tests.
