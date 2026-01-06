@@ -115,4 +115,10 @@ LogManager knows: ILogSink (interface)
 LogManager does NOT know: ConsoleSinkImpl, FileSinkImpl
 
 Result: Add new sinks without changing LogManager
+
+
 ```
+
+## Classes Diagram
+
+!(class)[classes_diagrams.png]

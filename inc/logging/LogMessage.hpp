@@ -132,7 +132,7 @@ namespace logging
 
         friend std::ostream &operator<<(std::ostream &os, const LogMessage &msg);
 
-        ~LogMessage() = default;
+            
     };
 
     // Can access private because we're friends!
