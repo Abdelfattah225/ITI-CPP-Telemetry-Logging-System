@@ -121,4 +121,4 @@ Result: Add new sinks without changing LogManager
 
 ## Classes Diagram
 
-!(class)[classes_diagrams.png]
+![](classes_diagrams.png)
