@@ -97,9 +97,8 @@ namespace logging
         }
 
     public:
-        LogMessage() = delete;
-            LogMessage(std::string application_name, Context cxt, uint8_t Payload) : app_name{application_name}, context{cxt}, payload{Payload}
-            {
+        LogMessage(std::string application_name, Context cxt, uint8_t Payload) : app_name{application_name}, context{cxt}, payload{Payload}
+        {
             // determine which serverity based on payload
             AssignSeverity();
             time = std::chrono::system_clock::now();
@@ -109,6 +108,12 @@ namespace logging
 
             text = "[" + TimeStampformated + "]" + " [" + contextformated + "]" + " [" + app_name + "]" + " [" + severityformated + "]" + " Payload value is: " + std::to_string(payload) + "%";
         }
+         // DEFAULT ALL SPECIAL MEMBER FUNCTIONS (Rule of 0 approach)   
+        ~LogMessage() = default;                             // Destructor
+        LogMessage(const LogMessage &) = default;            // Copy constructor
+        LogMessage &operator=(const LogMessage &) = default; // Copy assignment
+        LogMessage(LogMessage &&) = default;                 // Move constructor
+        LogMessage &operator=(LogMessage &&) = default;      // Move assignment
         const std::string &getAppName() const
         {
             return app_name;
@@ -131,14 +136,12 @@ namespace logging
         }
 
         friend std::ostream &operator<<(std::ostream &os, const LogMessage &msg);
-
-            
     };
 
     // Can access private because we're friends!
     inline std::ostream &operator<<(std::ostream &os, const LogMessage &msg)
     {
-        os << msg.text; 
+        os << msg.text;
         return os;
     }
 
