@@ -115,6 +115,8 @@ project/
 ## Phase Documentation
 
 - [Phase 1: Core Synchronous Logging Foundation](docs/01-Core-Synchronous-Logging-Foundation/README.md)
+- [Phase 2: Data Sources and Smart Resource Management](docs/02-DatasSources&SmartResourceManagement/README.md)
+
 
 #
 
