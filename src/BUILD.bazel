@@ -1,10 +1,8 @@
 # src/BUILD.bazel
 
-package(default_visibility = ["//visibility:public"])
-
-# ============================================================================
-# Phase 1: Logging Library
-# ============================================================================
+# ══════════════════════════════════════════════════════════════════════
+# LOGGING LIBRARY (Phase 1)
+# ══════════════════════════════════════════════════════════════════════
 
 cc_library(
     name = "logging",
@@ -13,13 +11,15 @@ cc_library(
         "logging/FileSinkImpl.cpp",
         "logging/LogManager.cpp",
     ],
-    copts = ["-Iinc/logging"],
-    deps = ["//inc/logging:logging_hdrs"],
+    hdrs = glob(["../inc/logging/*.hpp"]),
+    copts = ["-I$(GENDIR)/../inc/logging", "-Iinc/logging"],
+    includes = ["../inc/logging"],
+    visibility = ["//visibility:public"],
 )
 
-# ============================================================================
-# Phase 2: Smart Data Hub Library
-# ============================================================================
+# ══════════════════════════════════════════════════════════════════════
+# SMART DATA HUB LIBRARY (Phase 2)
+# ══════════════════════════════════════════════════════════════════════
 
 cc_library(
     name = "smart_data_hub",
@@ -30,9 +30,9 @@ cc_library(
         "SmartDataHub/SocketTelemetrySourceImpl.cpp",
         "SmartDataHub/TelemetryParser.cpp",
     ],
-    copts = ["-Iinc/SmartDataHub", "-Iinc/logging"],
-    deps = [
-        "//inc/SmartDataHub:smart_data_hub_hdrs",
-        ":logging",
-    ],
+    hdrs = glob(["../inc/SmartDataHub/*.hpp"]),
+    copts = ["-I$(GENDIR)/../inc/SmartDataHub", "-Iinc/SmartDataHub"],
+    includes = ["../inc/SmartDataHub"],
+    visibility = ["//visibility:public"],
+    deps = [":logging"],
 )

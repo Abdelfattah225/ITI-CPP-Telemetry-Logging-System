@@ -411,3 +411,8 @@ Result: Clean separation of concerns
 | Bonus: Parse /proc/meminfo | ✅ |
 
 ---
+
+
+## Phase 2 UML Diagram
+
+![](TelemetrySystem.png)
