@@ -1,0 +1,38 @@
+# src/BUILD.bazel
+
+package(default_visibility = ["//visibility:public"])
+
+# ============================================================================
+# Phase 1: Logging Library
+# ============================================================================
+
+cc_library(
+    name = "logging",
+    srcs = [
+        "logging/ConsoleSinkImpl.cpp",
+        "logging/FileSinkImpl.cpp",
+        "logging/LogManager.cpp",
+    ],
+    copts = ["-Iinc/logging"],
+    deps = ["//inc/logging:logging_hdrs"],
+)
+
+# ============================================================================
+# Phase 2: Smart Data Hub Library
+# ============================================================================
+
+cc_library(
+    name = "smart_data_hub",
+    srcs = [
+        "SmartDataHub/FileTelemetrySourceImpl.cpp",
+        "SmartDataHub/SafeFile.cpp",
+        "SmartDataHub/SafeSocket.cpp",
+        "SmartDataHub/SocketTelemetrySourceImpl.cpp",
+        "SmartDataHub/TelemetryParser.cpp",
+    ],
+    copts = ["-Iinc/SmartDataHub", "-Iinc/logging"],
+    deps = [
+        "//inc/SmartDataHub:smart_data_hub_hdrs",
+        ":logging",
+    ],
+)

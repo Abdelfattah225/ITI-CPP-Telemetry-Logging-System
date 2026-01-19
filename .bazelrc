@@ -1,0 +1,27 @@
+# .bazelrc - Bazel configuration options
+
+# Use C++17 standard
+build --cxxopt=-std=c++17
+build --host_cxxopt=-std=c++17
+
+# Enable all warnings
+build --cxxopt=-Wall
+build --cxxopt=-Wextra
+build --cxxopt=-Wpedantic
+
+# Optimization levels
+build:opt --cxxopt=-O2
+build:dbg --cxxopt=-O0
+build:dbg --cxxopt=-g
+
+# Enable colored output
+build --color=yes
+
+# Show test output on failure
+test --test_output=errors
+
+# Use local CPU resources efficiently
+build --jobs=auto
+
+# Platform-specific settings for POSIX
+build --cxxopt=-D_POSIX_C_SOURCE=200809L

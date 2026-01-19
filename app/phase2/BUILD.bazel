@@ -1,0 +1,14 @@
+# app/phase2/BUILD.bazel
+
+cc_binary(
+    name = "telemetry_app",
+    srcs = ["main.cpp"],
+    copts = [
+        "-Iinc/SmartDataHub",
+        "-Iinc/logging",
+    ],
+    deps = [
+        "//src:logging",
+        "//src:smart_data_hub",
+    ],
+)

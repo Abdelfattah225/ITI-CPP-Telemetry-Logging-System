@@ -1,0 +1,9 @@
+# Build rules for phase1 app
+
+# app/phase1/BUILD.bazel
+
+# cc_binary(
+#     name = "logging_app",
+#     srcs = ["main.cpp"],
+#     deps = ["//src:logging"],
+# )

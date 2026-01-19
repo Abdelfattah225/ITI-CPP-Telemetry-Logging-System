@@ -1,0 +1,17 @@
+# Build rules for tests 
+
+# Utest/phase1/BUILD.bazel
+
+cc_test(
+    name = "logging_tests",
+    srcs = [
+        "ConsoleSinkTest.cc",
+        "FileSinkTest.cc",
+        "LogManagerTest.cc",
+        "LogMessageTest.cpp",
+    ],
+    deps = [
+        "//src:logging",
+        "@com_google_googletest//:gtest_main",
+    ],
+)

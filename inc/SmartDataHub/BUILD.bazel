@@ -1,0 +1,17 @@
+# inc/SmartDataHub/BUILD.bazel
+
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "smart_data_hub_hdrs",
+    hdrs = [
+        "FileTelemetrySourceImpl.hpp",
+        "ITelemetrySource.hpp",
+        "SafeFile.hpp",
+        "SafeSocket.hpp",
+        "SocketTelemetrySourceImpl.hpp",
+        "TelemetryParser.hpp",
+    ],
+    include_prefix = "",
+    strip_include_prefix = "",
+)

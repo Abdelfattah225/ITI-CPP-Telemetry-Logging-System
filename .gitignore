@@ -1,1 +1,181 @@
-build/*
+# ============================================================================
+# Bazel
+# ============================================================================
+
+# Bazel symlinks and output directories
+bazel-*
+
+# Bazel user-specific settings
+.bazelrc.user
+
+# Bazel cache (if stored locally)
+.bazel/
+
+# ============================================================================
+# CMake
+# ============================================================================
+
+# Build directory
+build/
+cmake-build-*/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+CMakeScripts/
+CTestTestfile.cmake
+Testing/
+
+# CMake compile commands (for IDEs)
+compile_commands.json
+
+# ============================================================================
+# C++ Compiled Files
+# ============================================================================
+
+# Object files
+*.o
+*.obj
+*.ko
+
+# Libraries
+*.a
+*.lib
+*.so
+*.so.*
+*.dylib
+*.dll
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Precompiled headers
+*.gch
+*.pch
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# ============================================================================
+# IDE and Editor Files
+# ============================================================================
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# CLion / JetBrains
+.idea/
+*.iml
+cmake-build-debug/
+cmake-build-release/
+
+# Eclipse
+.project
+.cproject
+.settings/
+
+# Qt Creator
+*.autosave
+*.pro.user
+*.pro.user.*
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+.#*
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# ============================================================================
+# OS Generated Files
+# ============================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+.directory
+
+# ============================================================================
+# Project Specific
+# ============================================================================
+
+# Log files
+*.log
+log.txt
+logs/
+
+# Test output
+test_output/
+*.test_output
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Core dumps
+core
+core.*
+
+# Coverage reports
+*.gcno
+*.gcda
+*.gcov
+coverage/
+lcov.info
+
+# Profiling
+*.prof
+gmon.out
+
+# Documentation builds
+docs/_build/
+docs/html/
+docs/latex/
+
+# ============================================================================
+# Dependencies (if vendored)
+# ============================================================================
+
+# Don't ignore if you want to commit googletest source
+# _deps/
+
+# External libraries
+external/
+third_party/
+
+# ============================================================================
+# Secrets and Credentials (Safety)
+# ============================================================================
+
+*.pem
+*.key
+.env
+.env.*
+secrets/
+credentials/

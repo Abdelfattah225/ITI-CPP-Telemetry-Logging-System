@@ -1,0 +1,14 @@
+# Build rules for tests 
+
+# Utest/phase2/BUILD.bazel
+
+cc_test(
+    name = "smart_data_hub_tests",
+    srcs = [
+        # Add your phase2 test files here
+    ],
+    deps = [
+        "//src:smart_data_hub",
+        "@com_google_googletest//:gtest_main",
+    ],
+)

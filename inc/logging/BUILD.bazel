@@ -1,0 +1,16 @@
+# inc/logging/BUILD.bazel
+
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "logging_hdrs",
+    hdrs = [
+        "ConsoleSinkImpl.hpp",
+        "FileSinkImpl.hpp",
+        "ILogSink.hpp",
+        "LogManager.hpp",
+        "LogMessage.hpp",
+    ],
+    include_prefix = "",
+    strip_include_prefix = "",
+)
