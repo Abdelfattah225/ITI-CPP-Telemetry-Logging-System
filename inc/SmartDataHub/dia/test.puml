@@ -1,0 +1,145 @@
+@startuml TelemetrySystem
+
+' ============================================
+' STYLING AND THEME
+' ============================================
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam classBackgroundColor White
+skinparam classBorderColor #333333
+skinparam classBorderThickness 2
+
+skinparam stereotypeCBackgroundColor #9b59b6
+skinparam stereotypeIBackgroundColor #9b59b6
+
+skinparam class {
+    HeaderBackgroundColor #4a90d9
+    HeaderFontColor White
+    AttributeBackgroundColor #f9f9f9
+    BackgroundColor White
+}
+
+skinparam interface {
+    HeaderBackgroundColor #9b59b6
+    HeaderFontColor White
+    BorderStyle dashed
+}
+
+skinparam note {
+    BackgroundColor #ffffcc
+    BorderColor #333333
+}
+
+' ============================================
+' INTERFACE
+' ============================================
+interface ITelemetrySource {
+    + openSource(): bool
+    + readSource(): bool
+    + ~ITelemetrySource()
+}
+
+' ============================================
+' IMPLEMENTATION CLASSES
+' ============================================
+class FileTelemetrySourceImpl <<Rule of 0>> {
+    - m_file: SafeFile
+    - m_filepath: string
+}
+
+class SocketTelemetrySourceImpl <<Rule of 0>> {
+    - m_socket: SafeSocket
+    - m_socketpath: string
+}
+
+' ============================================
+' RESOURCE WRAPPER CLASSES (RAII)
+' ============================================
+class SafeFile <<Rule of 5>> #palegreen {
+    - _fd: int
+    __
+    + openFile(): void
+    + readline(): string
+    + writeline(): void
+    + closeFile(): void
+    + ~SafeFile()
+    + SafeFile(SafeFile&&)
+    + operator=(SafeFile&&): SafeFile&
+}
+
+class SafeSocket <<Rule of 5>> #palegreen {
+    - sockfd: int
+    __
+    + createSocket(): void
+    + connectSocket(): void
+    + sendData(): void
+    + receiveData(): string
+    + closeSocket(): void
+    + ~SafeSocket()
+    + SafeSocket(SafeSocket&&)
+    + operator=(SafeSocket&&): SafeSocket&
+}
+
+' ============================================
+' PARSER CLASS
+' ============================================
+class TelemetryParser <<Rule of 0>> #wheat {
+    - m_cpuSource: FileTelemetrySourceImpl
+    - m_memSource: FileTelemetrySourceImpl
+    __
+    + getCpuUsage(): double
+    + getMemUsage(): double
+    + getCpuString(): string
+    + getMemString(): string
+}
+
+' ============================================
+' RELATIONSHIPS
+' ============================================
+
+' Inheritance (implements interface)
+FileTelemetrySourceImpl ..|> ITelemetrySource
+SocketTelemetrySourceImpl ..|> ITelemetrySource
+
+' Composition (owns resource wrappers)
+FileTelemetrySourceImpl *-- SafeFile : contains
+SocketTelemetrySourceImpl *-- SafeSocket : contains
+
+' Composition (parser owns sources)
+TelemetryParser *-- "2" FileTelemetrySourceImpl : contains
+
+' ============================================
+' NOTES
+' ============================================
+note top of ITelemetrySource
+    <b>Abstract Interface</b>
+    Defines contract for all
+    telemetry data sources
+end note
+
+note bottom of SafeFile
+    <b>RAII Wrapper</b>
+    Manages file descriptor lifecycle
+    Move-only semantics
+end note
+
+note bottom of SafeSocket
+    <b>RAII Wrapper</b>
+    Manages socket descriptor lifecycle
+    Move-only semantics
+end note
+
+note right of TelemetryParser
+    <b>High-level API</b>
+    Uses file sources for
+    /proc/stat and /proc/meminfo
+end note
+
+' ============================================
+' LAYOUT HINTS
+' ============================================
+ITelemetrySource -[hidden]down- FileTelemetrySourceImpl
+FileTelemetrySourceImpl -[hidden]right- SocketTelemetrySourceImpl
+SafeFile -[hidden]right- SafeSocket
+
+@enduml
