@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/phase1_tests.dir/LogMessageTest.cpp.o CMakeFiles/phase1_tests.dir/ConsoleSinkTest.cc.o CMakeFiles/phase1_tests.dir/FileSinkTest.cc.o CMakeFiles/phase1_tests.dir/LogManagerTest.cc.o -o phase1_tests  ../../src/liblogging.a ../../lib/libgtest.a ../../lib/libgtest_main.a ../../lib/libgtest.a 

@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/logging_app.dir/main.cpp.o -o logging_app  ../src/liblogging.a 
