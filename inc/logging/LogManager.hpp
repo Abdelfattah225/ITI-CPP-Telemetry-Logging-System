@@ -13,11 +13,14 @@ namespace logging
     {
     private:
         /* data */
+        std::string name;
         std::vector<std::unique_ptr<ILogSink>> sinks;
         std::vector<LogMessage> buffer;
 
     public:
         LogManager(/* args */) = default;
+        // Add this constructor:
+        LogManager(const std::string &name, std::vector<std::unique_ptr<ILogSink>> sinks, size_t bufferSize);
         void addSink(std::unique_ptr<ILogSink> sink);
 
         void log(const LogMessage &msg);
@@ -28,6 +31,3 @@ namespace logging
     };
 
 }
-
-
-    

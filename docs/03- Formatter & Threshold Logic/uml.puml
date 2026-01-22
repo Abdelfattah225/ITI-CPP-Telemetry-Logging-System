@@ -1,0 +1,228 @@
+@startuml Phase3_Class_Diagram
+
+!theme plain
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam packageStyle rectangle
+
+title Phase 3: Formatter & Threshold Logic - Class Diagram
+
+' ==================== ENUMS ====================
+package "Enums" <<Rectangle>> #E8F5E9 {
+    
+    enum SeverityLvl_enum <<enum class>> {
+        INFO = 0
+        WARNING = 1
+        CRITICAL = 2
+        --
+        +operator<(lhs, rhs) : bool
+        +operator>(lhs, rhs) : bool
+    }
+    
+    enum LogSinkType_enum <<enum class>> {
+        CONSOLE
+        FILE
+        SOCKET
+    }
+    
+    enum TelemetrySrc_enum <<enum class>> {
+        CPU
+        GPU
+        RAM
+    }
+    
+    class "<<utility>>\nEnumHelpers" as EnumHelpers {
+        +{static} toString(SeverityLvl_enum) : string_view
+        +{static} toString(LogSinkType_enum) : string_view
+        +{static} toString(TelemetrySrc_enum) : string_view
+    }
+}
+
+' ==================== POLICIES ====================
+package "Policies" <<Rectangle>> #E3F2FD {
+    
+    class CpuPolicy <<struct>> {
+        +{static} constexpr context : TelemetrySrc_enum = CPU
+        +{static} constexpr unit : string_view = "%"
+        +{static} constexpr WARNING : float = 75.0f
+        +{static} constexpr CRITICAL : float = 90.0f
+        --
+        +{static} constexpr inferSeverity(val : float) : SeverityLvl_enum
+    }
+    
+    class GpuPolicy <<struct>> {
+        +{static} constexpr context : TelemetrySrc_enum = GPU
+        +{static} constexpr unit : string_view = "%"
+        +{static} constexpr WARNING : float = 80.0f
+        +{static} constexpr CRITICAL : float = 95.0f
+        --
+        +{static} constexpr inferSeverity(val : float) : SeverityLvl_enum
+    }
+    
+    class RamPolicy <<struct>> {
+        +{static} constexpr context : TelemetrySrc_enum = RAM
+        +{static} constexpr unit : string_view = "%"
+        +{static} constexpr WARNING : float = 70.0f
+        +{static} constexpr CRITICAL : float = 85.0f
+        --
+        +{static} constexpr inferSeverity(val : float) : SeverityLvl_enum
+    }
+    
+    class "<<utility>>\nPolicyValidation" as PolicyValidation {
+        +{static} isValidPolicy<Policy>() : bool
+    }
+}
+
+' ==================== PARSER ====================
+package "Parser" <<Rectangle>> #FFF3E0 {
+    
+    class "<<utility>>\nParser" as Parser {
+        +{static} parseFloat(str : const string&) : optional<float>
+        +{static} parseAndClassify<Policy>(str : const string&) : optional<SeverityLvl_enum>
+    }
+}
+
+' ==================== FORMATTER ====================
+package "Formatter" <<Rectangle>> #FCE4EC {
+    
+    class "LogFormatter<Policy>" as LogFormatter {
+        +{static} formatDataToLogMsg(raw : const string&) : optional<LogMessage>
+        +{static} msgDescription(val : float) : string
+        +{static} currentTimeStamp() : string
+        --
+        -{static} mapContext(src : TelemetrySrc_enum) : Context
+        -{static} mapSeverity(sev : SeverityLvl_enum) : Severity
+    }
+}
+
+' ==================== FACTORY ====================
+package "Factory Pattern" <<Rectangle>> #F3E5F5 {
+    
+    class LogSinkFactory <<static>> {
+        -LogSinkFactory() = delete
+        --
+        +{static} create(type : LogSinkType_enum) : unique_ptr<ILogSink>
+        +{static} create(type : LogSinkType_enum, config : const string&) : unique_ptr<ILogSink>
+    }
+}
+
+' ==================== BUILDER ====================
+package "Builder Pattern" <<Rectangle>> #E0F7FA {
+    
+    class LogManagerBuilder {
+        -m_appName : string
+        -m_sinks : vector<unique_ptr<ILogSink>>
+        -m_bufferSize : size_t
+        --
+        +LogManagerBuilder()
+        +setAppName(name : const string&) : LogManagerBuilder&
+        +addSink(type : LogSinkType_enum) : LogManagerBuilder&
+        +addSink(type : LogSinkType_enum, config : const string&) : LogManagerBuilder&
+        +setBufferSize(size : size_t) : LogManagerBuilder&
+        +build() : unique_ptr<LogManager>
+    }
+}
+
+' ==================== LOGGING (From Phase 1) ====================
+package "Logging (Phase 1)" <<Rectangle>> #FAFAFA {
+    
+    enum Context <<enum class>> {
+        CPU
+        GPU
+        RAM
+    }
+    
+    enum Severity <<enum class>> {
+        INFO
+        WARN
+        CRITICAL
+    }
+    
+    class LogMessage {
+        -app_name : string
+        -time : TimeStamp
+        -context : Context
+        -severity : Severity
+        -payload : uint8_t
+        -text : string
+        --
+        +LogMessage(app_name, context, payload)
+        +LogMessage(app_name, context, severity, payload)
+        +getAppName() : const string&
+        +getContext() : Context
+        +getSeverity() : Severity
+        +getPayload() : uint8_t
+        +getText() : const string&
+        --
+        +operator<<(os, msg) : ostream&
+    }
+    
+    interface ILogSink <<interface>> {
+        +{abstract} write(message : const string&) : void
+        +{abstract} ~ILogSink()
+    }
+    
+    class ConsoleSinkImpl {
+        +write(message : const string&) : void
+    }
+    
+    class FileSinkImpl {
+        -m_filePath : string
+        -m_file : ofstream
+        --
+        +FileSinkImpl(path : const string&)
+        +write(message : const string&) : void
+    }
+    
+    class LogManager {
+        -m_appName : string
+        -m_sinks : vector<unique_ptr<ILogSink>>
+        -m_buffer : vector<LogMessage>
+        --
+        +log(msg : const LogMessage&) : void
+        +flush() : void
+    }
+}
+
+' ==================== RELATIONSHIPS ====================
+
+' Policy uses Enums
+CpuPolicy ..> TelemetrySrc_enum : uses
+CpuPolicy ..> SeverityLvl_enum : returns
+GpuPolicy ..> TelemetrySrc_enum : uses
+GpuPolicy ..> SeverityLvl_enum : returns
+RamPolicy ..> TelemetrySrc_enum : uses
+RamPolicy ..> SeverityLvl_enum : returns
+
+' Parser uses Policies and Enums
+Parser ..> SeverityLvl_enum : returns
+
+' LogFormatter relationships
+LogFormatter ..> Parser : uses
+LogFormatter ..> LogMessage : creates
+LogFormatter ..> Context : maps to
+LogFormatter ..> Severity : maps to
+LogFormatter "1" ..> "1" CpuPolicy : <<bind>>
+LogFormatter "1" ..> "1" GpuPolicy : <<bind>>
+LogFormatter "1" ..> "1" RamPolicy : <<bind>>
+
+' Factory relationships
+LogSinkFactory ..> LogSinkType_enum : uses
+LogSinkFactory ..> ILogSink : creates
+LogSinkFactory ..> ConsoleSinkImpl : creates
+LogSinkFactory ..> FileSinkImpl : creates
+
+' Builder relationships
+LogManagerBuilder ..> LogSinkFactory : uses
+LogManagerBuilder ..> LogManager : builds
+LogManagerBuilder o-- ILogSink : aggregates
+
+' Sink inheritance
+ILogSink <|.. ConsoleSinkImpl
+ILogSink <|.. FileSinkImpl
+
+' LogManager relationships
+LogManager o-- ILogSink : contains
+LogManager o-- LogMessage : buffers
+
+@enduml

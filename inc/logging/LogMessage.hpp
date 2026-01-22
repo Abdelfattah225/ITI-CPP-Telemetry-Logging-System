@@ -97,6 +97,19 @@ namespace logging
         }
 
     public:
+        //  Constructor with pre-computed severity (for LogFormatter)
+        LogMessage(std::string application_name, Context cxt, Severity sev, uint8_t Payload)
+            : app_name{application_name}, context{cxt}, severity{sev}, payload{Payload}
+        {
+            time = std::chrono::system_clock::now();
+            std::string TimeStampformated = timeToString(time);
+            std::string severityformated = severityToString(severity);
+            std::string contextformated = contextToString(context);
+
+            text = "[" + TimeStampformated + "]" + " [" + contextformated + "]" +
+                   " [" + app_name + "]" + " [" + severityformated + "]" +
+                   " Payload value is: " + std::to_string(payload) + "%";
+        }
         LogMessage(std::string application_name, Context cxt, uint8_t Payload) : app_name{application_name}, context{cxt}, payload{Payload}
         {
             // determine which serverity based on payload
@@ -108,7 +121,7 @@ namespace logging
 
             text = "[" + TimeStampformated + "]" + " [" + contextformated + "]" + " [" + app_name + "]" + " [" + severityformated + "]" + " Payload value is: " + std::to_string(payload) + "%";
         }
-         // DEFAULT ALL SPECIAL MEMBER FUNCTIONS (Rule of 0 approach)   
+        // DEFAULT ALL SPECIAL MEMBER FUNCTIONS (Rule of 0 approach)
         ~LogMessage() = default;                             // Destructor
         LogMessage(const LogMessage &) = default;            // Copy constructor
         LogMessage &operator=(const LogMessage &) = default; // Copy assignment
