@@ -1,4 +1,4 @@
-# src/BUILD.bazel
+load("@rules_cc//cc:defs.bzl", "cc_library")
 
 # ══════════════════════════════════════════════════════════════════════
 # LOGGING LIBRARY (Phase 1)
@@ -11,10 +11,10 @@ cc_library(
         "logging/FileSinkImpl.cpp",
         "logging/LogManager.cpp",
     ],
-    hdrs = glob(["../inc/logging/*.hpp"]),
-    copts = ["-I$(GENDIR)/../inc/logging", "-Iinc/logging"],
-    includes = ["../inc/logging"],
     visibility = ["//visibility:public"],
+    deps = [
+        "//inc/logging:logging_hdrs",
+    ],
 )
 
 # ══════════════════════════════════════════════════════════════════════
@@ -30,9 +30,26 @@ cc_library(
         "SmartDataHub/SocketTelemetrySourceImpl.cpp",
         "SmartDataHub/TelemetryParser.cpp",
     ],
-    hdrs = glob(["../inc/SmartDataHub/*.hpp"]),
-    copts = ["-I$(GENDIR)/../inc/SmartDataHub", "-Iinc/SmartDataHub"],
-    includes = ["../inc/SmartDataHub"],
     visibility = ["//visibility:public"],
-    deps = [":logging"],
+    deps = [
+        ":logging",
+        "//inc/SmartDataHub:smart_data_hub_hdrs",
+    ],
+)
+
+# ══════════════════════════════════════════════════════════════════════
+# FORMATTER (Phase 3)
+# ══════════════════════════════════════════════════════════════════════
+
+cc_library(
+    name = "formatter",
+    srcs = [
+        "Formatter/LogManagerBuilder.cpp",
+        "Formatter/LogSinkFactory.cpp",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":logging",
+        "//inc/Formatter:formatter_hdrs",
+    ],
 )
