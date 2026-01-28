@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Create telemetry files with random values
+echo "Starting telemetry generator..."
+echo "Press Ctrl+C to stop"
+
 while true; do
     # CPU: 0-100%
     echo $((RANDOM % 101)) > /tmp/cpu_telemetry.txt
