@@ -336,3 +336,5 @@ bazel run //app/phase4:main
 | **MEGA BONUS: ThreadPool** | ✅ |
 
 ---
+## UML Diagram
+!()[Phase4_Asynchronous_Logging.png]
