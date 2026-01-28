@@ -23,7 +23,10 @@ A scalable, multi-threaded logging system written in Modern C++17. Designed with
 │   │ CPU Telemetry │   │ RAM Telemetry │   │ GPU Telemetry │                  │
 │   │   (File)      │   │   (File)      │   │   (Socket)    │                  │
 │   └───────┬───────┘   └───────┬───────┘   └───────┬───────┘                  │
-│           │                   │                   │                          │
+│           │   
+
+Move to Phase 5 - start SOME/IP integration?
+                │                   │                          │
 │           └───────────────────┼───────────────────┘                          │
 │                               │                                              │
 │                               ▼                                              │
@@ -261,7 +264,7 @@ ITI_Cpp_LogLog_Project/
         ├── README.md
         ├── uml.puml
         
-
+```
 
 ## Phase Highlights
 
