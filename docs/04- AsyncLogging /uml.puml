@@ -1,0 +1,369 @@
+@startuml Phase4_Asynchronous_Logging
+
+!theme plain
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam classBackgroundColor #f5f5f5
+skinparam classBorderColor #333333
+skinparam arrowColor #333333
+skinparam stereotypeCBackgroundColor #e1f5fe
+skinparam packageBackgroundColor #fafafa
+
+title Phase 4: Asynchronous Logging - Class Diagram
+
+' ══════════════════════════════════════════════════════════════════════
+' PACKAGES
+' ══════════════════════════════════════════════════════════════════════
+
+package "async_logging" #e8f5e9 {
+
+    ' ══════════════════════════════════════════════════════════════════════
+    ' RING BUFFER (Template Class)
+    ' ══════════════════════════════════════════════════════════════════════
+    
+    class "RingBuffer<T>" <<template>> {
+        - m_buffer : std::vector<std::optional<T>>
+        - m_head : std::size_t
+        - m_tail : std::size_t
+        - m_count : std::size_t
+        - m_capacity : std::size_t
+        __
+        + <<explicit>> RingBuffer(capacity : std::size_t)
+        + ~RingBuffer() = default
+        ..Move Semantics..
+        + RingBuffer(RingBuffer&&) = default
+        + operator=(RingBuffer&&) : RingBuffer& = default
+        ..Deleted Copy..
+        + RingBuffer(const RingBuffer&) = delete
+        + operator=(const RingBuffer&) = delete
+        __
+        + tryPush(item : T) : bool
+        + tryPop() : std::optional<T>
+        + isEmpty() : bool {query}
+        + isFull() : bool {query}
+        + size() : std::size_t {query}
+        + capacity() : std::size_t {query}
+    }
+
+    note right of "RingBuffer<T>"
+        **Lock-free Circular Buffer**
+        - Fixed capacity
+        - O(1) push/pop
+        - Wraps around at end
+        - Uses std::optional for empty slots
+    end note
+
+    ' ══════════════════════════════════════════════════════════════════════
+    ' THREAD-SAFE RING BUFFER (Template Class)
+    ' ══════════════════════════════════════════════════════════════════════
+    
+    class "ThreadSafeRingBuffer<T>" <<template>> {
+        - m_buffer : RingBuffer<T>
+        - m_mutex : std::mutex {mutable}
+        - m_condNotEmpty : std::condition_variable
+        - m_condNotFull : std::condition_variable
+        - m_stopped : bool
+        __
+        + <<explicit>> ThreadSafeRingBuffer(capacity : std::size_t)
+        + ~ThreadSafeRingBuffer() = default
+        ..Non-Copyable, Non-Movable..
+        + ThreadSafeRingBuffer(const&) = delete
+        + operator=(const&) = delete
+        + ThreadSafeRingBuffer(&&) = delete
+        + operator=(&&) = delete
+        __
+        + push(item : T) : bool
+        + pop() : std::optional<T>
+        + stop() : void
+        + isStopped() : bool {query}
+        + isEmpty() : bool {query}
+        + size() : std::size_t {query}
+        + capacity() : std::size_t {query}
+    }
+
+    note left of "ThreadSafeRingBuffer<T>"
+        **Thread-Safe Wrapper**
+        - Blocking push (waits if full)
+        - Blocking pop (waits if empty)
+        - Graceful shutdown via stop()
+        - Uses condition_variable
+          for efficient waiting
+    end note
+
+    ' ══════════════════════════════════════════════════════════════════════
+    ' THREAD POOL
+    ' ══════════════════════════════════════════════════════════════════════
+    
+    class ThreadPool {
+        - m_workers : std::vector<std::thread>
+        - m_tasks : std::queue<std::function<void()>>
+        - m_mutex : std::mutex
+        - m_condition : std::condition_variable
+        - m_stop : std::atomic<bool>
+        __
+        - workerLoop() : void
+        __
+        + <<explicit>> ThreadPool(numThreads : std::size_t)
+        + ~ThreadPool()
+        ..Non-Copyable, Non-Movable..
+        + ThreadPool(const&) = delete
+        + operator=(const&) = delete
+        + ThreadPool(&&) = delete
+        + operator=(&&) = delete
+        __
+        + enqueue<F, Args...>(func : F&&, args : Args&&...) : std::future<ReturnType>
+        + enqueueTask(task : std::function<void()>) : void
+        + getThreadCount() : std::size_t {query}
+        + getPendingTaskCount() : std::size_t
+    }
+
+    note right of ThreadPool
+        **Reusable Thread Pool**
+        - Pre-created worker threads
+        - Task queue with thread-safe access
+        - Supports any callable
+        - Returns std::future for results
+        - RAII: destructor waits for
+          all tasks to complete
+    end note
+
+    ' ══════════════════════════════════════════════════════════════════════
+    ' ASYNC LOG MANAGER
+    ' ══════════════════════════════════════════════════════════════════════
+    
+    class AsyncLogManager {
+        - m_name : std::string
+        - m_sinks : std::vector<std::shared_ptr<ILogSink>>
+        - m_buffer : ThreadSafeRingBuffer<LogMessage>
+        - m_workerThread : std::thread
+        - m_running : std::atomic<bool>
+        - m_threadPool : std::optional<ThreadPool>
+        - m_useThreadPool : bool
+        __
+        - workerFunction() : void
+        - workerFunctionWithPool() : void
+        __
+        + AsyncLogManager(name : const std::string&, 
+        .       sinks : std::vector<std::shared_ptr<ILogSink>>,
+        .       bufferCapacity : std::size_t,
+        .       useThreadPool : bool = false,
+        .       poolSize : std::size_t = 4)
+        + ~AsyncLogManager()
+        ..Non-Copyable, Non-Movable..
+        + AsyncLogManager(const&) = delete
+        + operator=(const&) = delete
+        + AsyncLogManager(&&) = delete
+        + operator=(&&) = delete
+        __
+        + start() : void
+        + stop() : void
+        + log(msg : LogMessage) : bool
+        + addSink(sink : std::shared_ptr<ILogSink>) : void
+        + isRunning() : bool {query}
+    }
+
+    note left of AsyncLogManager
+        **Asynchronous Log Manager**
+        - Non-blocking log() method
+        - Background worker thread
+        - Optional ThreadPool for
+          parallel sink writes
+        - Graceful shutdown with
+          buffer draining
+    end note
+
+}
+
+package "logging" #fff3e0 {
+
+    ' ══════════════════════════════════════════════════════════════════════
+    ' LOG MESSAGE (From Phase 1)
+    ' ══════════════════════════════════════════════════════════════════════
+    
+    class LogMessage {
+        - app_name : std::string
+        - time : TimeStamp
+        - context : Context
+        - severity : Severity
+        - payload : uint8_t
+        - text : std::string
+        __
+        + LogMessage(app_name, context, payload)
+        + LogMessage(app_name, context, severity, payload)
+        + ~LogMessage() = default
+        ..Rule of Zero..
+        + LogMessage(const&) = default
+        + operator=(const&) = default
+        + LogMessage(&&) = default
+        + operator=(&&) = default
+        __
+        + getAppName() : const std::string& {query}
+        + getTime() : const TimeStamp& {query}
+        + getContext() : const Context& {query}
+        + getSeverity() : const Severity& {query}
+        + getText() : const std::string& {query}
+        + <<friend>> operator<<(os, msg) : std::ostream&
+    }
+
+    ' ══════════════════════════════════════════════════════════════════════
+    ' ILOG SINK INTERFACE (From Phase 1)
+    ' ══════════════════════════════════════════════════════════════════════
+    
+    interface ILogSink <<interface>> {
+        + {abstract} write(msg : const LogMessage&) : void {query}
+        + ~ILogSink() = default
+    }
+
+    ' ══════════════════════════════════════════════════════════════════════
+    ' SINK IMPLEMENTATIONS (From Phase 1)
+    ' ══════════════════════════════════════════════════════════════════════
+    
+    class ConsoleSinkImpl {
+        + write(msg : const LogMessage&) : void {query}
+    }
+
+    class FileSinkImpl {
+        - m_filepath : std::string
+        - m_fileStream : std::ofstream
+        __
+        + <<explicit>> FileSinkImpl(filepath : const std::string&)
+        + ~FileSinkImpl()
+        + write(msg : const LogMessage&) : void {query}
+    }
+
+    ' ══════════════════════════════════════════════════════════════════════
+    ' ENUMS (From Phase 1)
+    ' ══════════════════════════════════════════════════════════════════════
+    
+    enum Severity <<enumeration>> {
+        INFO
+        WARN
+        CRITICAL
+    }
+
+    enum Context <<enumeration>> {
+        CPU
+        GPU
+        RAM
+    }
+
+}
+
+package "SmartDataHub" #fce4ec {
+
+    ' ══════════════════════════════════════════════════════════════════════
+    ' TELEMETRY SOURCE INTERFACE (From Phase 2)
+    ' ══════════════════════════════════════════════════════════════════════
+    
+    interface ITelemetrySource <<interface>> {
+        + {abstract} openSource() : bool
+        + {abstract} readSource(out : std::string&) : bool
+        + ~ITelemetrySource() = default
+    }
+
+    class FileTelemetrySourceImpl {
+        - m_file : SafeFile
+        - m_filepath : std::string
+        __
+        + <<explicit>> FileTelemetrySourceImpl(path : const std::string&)
+        + openSource() : bool
+        + readSource(out : std::string&) : bool
+    }
+
+}
+
+package "std" #e3f2fd {
+    
+    class "std::thread" as StdThread {
+        + thread(func, args...)
+        + join() : void
+        + joinable() : bool
+    }
+
+    class "std::mutex" as StdMutex {
+        + lock() : void
+        + unlock() : void
+    }
+
+    class "std::condition_variable" as StdCondVar {
+        + wait(lock, predicate) : void
+        + notify_one() : void
+        + notify_all() : void
+    }
+
+    class "std::atomic<T>" as StdAtomic <<template>> {
+        + load() : T
+        + store(value : T) : void
+        + fetch_add(value : T) : T
+    }
+
+    class "std::function<void()>" as StdFunction {
+        + operator()() : void
+    }
+
+    class "std::future<T>" as StdFuture <<template>> {
+        + get() : T
+        + wait() : void
+    }
+
+    class "std::optional<T>" as StdOptional <<template>> {
+        + has_value() : bool
+        + value() : T&
+    }
+
+}
+
+' ══════════════════════════════════════════════════════════════════════
+' RELATIONSHIPS
+' ══════════════════════════════════════════════════════════════════════
+
+' Inheritance
+ConsoleSinkImpl ..|> ILogSink
+FileSinkImpl ..|> ILogSink
+FileTelemetrySourceImpl ..|> ITelemetrySource
+
+' Composition
+"ThreadSafeRingBuffer<T>" *-- "RingBuffer<T>" : wraps
+AsyncLogManager *-- "ThreadSafeRingBuffer<T>" : m_buffer
+AsyncLogManager *-- ThreadPool : m_threadPool\n<<optional>>
+AsyncLogManager o-- ILogSink : m_sinks\n<<shared_ptr>>
+
+ThreadPool *-- StdThread : m_workers
+ThreadPool *-- StdFunction : m_tasks
+ThreadPool *-- StdMutex : m_mutex
+ThreadPool *-- StdCondVar : m_condition
+ThreadPool *-- StdAtomic : m_stop
+
+"ThreadSafeRingBuffer<T>" *-- StdMutex : m_mutex
+"ThreadSafeRingBuffer<T>" *-- StdCondVar : m_condNotEmpty\nm_condNotFull
+
+"RingBuffer<T>" *-- StdOptional : m_buffer
+
+AsyncLogManager *-- StdThread : m_workerThread
+AsyncLogManager *-- StdAtomic : m_running
+
+' Dependencies
+LogMessage --> Severity
+LogMessage --> Context
+AsyncLogManager ..> LogMessage : logs
+ILogSink ..> LogMessage : writes
+
+' ══════════════════════════════════════════════════════════════════════
+' LEGEND
+' ══════════════════════════════════════════════════════════════════════
+
+legend right
+    |= Symbol |= Meaning |
+    | <&box> | Composition (owns) |
+    | <&diamond> | Aggregation (uses) |
+    | <&arrow-thick-top> | Inheritance |
+    | <&ellipses> | Dependency |
+    
+    |= Color |= Package |
+    | <#e8f5e9> | async_logging (Phase 4) |
+    | <#fff3e0> | logging (Phase 1) |
+    | <#fce4ec> | SmartDataHub (Phase 2) |
+    | <#e3f2fd> | std library |
+endlegend
+
+@enduml
