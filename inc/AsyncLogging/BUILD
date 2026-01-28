@@ -20,6 +20,10 @@ cc_library(
     hdrs = [
         "RingBuffer.hpp",
         "ThreadSafeRingBuffer.hpp",
+        "AsyncLogManager.hpp",
     ],
     includes = ["."],
+    deps = [
+        "//inc/logging:logging_hdrs",
+    ],
 )
