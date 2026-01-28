@@ -11,7 +11,8 @@ cc_library(
         "LogManager.hpp",
         "LogMessage.hpp",
     ],
-    include_prefix = "",
-    strip_include_prefix = "",
-    includes = ["."],  # Adds inc/logging to include path
+    includes = ["."],
+    deps = [
+        "//inc/AsyncLogging:RingBuffer",
+    ],
 )

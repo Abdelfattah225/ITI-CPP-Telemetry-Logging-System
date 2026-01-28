@@ -2,32 +2,36 @@
 
 #include "ILogSink.hpp"
 #include "LogMessage.hpp"
-
+#include "AsyncLogging/RingBuffer.hpp"
 #include <vector>
 #include <memory>
 
 namespace logging
 {
 
-    class LogManager
-    {
-    private:
-        /* data */
-        std::string name;
-        std::vector<std::unique_ptr<ILogSink>> sinks;
-        std::vector<LogMessage> buffer;
+class LogManager
+{
+private:
+    std::string name;
+    std::vector<std::unique_ptr<ILogSink>> sinks;
+    async_logging::RingBuffer<LogMessage> m_buffer;
 
-    public:
-        LogManager(/* args */) = default;
-        // Add this constructor:
-        LogManager(const std::string &name, std::vector<std::unique_ptr<ILogSink>> sinks, size_t bufferSize);
-        void addSink(std::unique_ptr<ILogSink> sink);
+public:
+    LogManager(const std::string& name, std::vector<std::unique_ptr<ILogSink>> sinks, size_t bufferSize);
 
-        void log(const LogMessage &msg);
+    LogManager(const LogManager&) = delete;
+    LogManager& operator=(const LogManager&) = delete;
 
-        void flush();
+    LogManager(LogManager&&) = default;
+    LogManager& operator=(LogManager&&) = default;
 
-        ~LogManager() = default;
-    };
+    ~LogManager() = default;
+
+    void addSink(std::unique_ptr<ILogSink> sink);
+
+    bool log(LogMessage msg);
+
+    void flush();
+};
 
 }
