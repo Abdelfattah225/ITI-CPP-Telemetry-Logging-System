@@ -1,4 +1,4 @@
-#include "AsyncLogging/AsyncLogManager.hpp"
+#include "inc/AsyncLogging/AsyncLogManager.hpp"
 #include <iostream>
 
 namespace async_logging

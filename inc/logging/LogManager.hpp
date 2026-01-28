@@ -2,7 +2,7 @@
 
 #include "ILogSink.hpp"
 #include "LogMessage.hpp"
-#include "AsyncLogging/RingBuffer.hpp"
+#include "inc/AsyncLogging/RingBuffer.hpp"
 #include <vector>
 #include <memory>
 

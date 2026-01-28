@@ -9,3 +9,24 @@ cc_binary(
         "//inc/AsyncLogging:ThreadSafeRingBuffer",
     ],
 )
+
+cc_binary(
+    name = "test_async_log_manager",
+    srcs = ["test_async_log_manager.cpp"],
+    deps = [
+        "//src:async_logging",
+        "//src:logging",
+        "//inc/Formatter:formatter_hdrs",
+    ],
+)
+
+
+cc_binary(
+    name = "main",
+    srcs = ["main.cpp"],
+    deps = [
+        "//src:async_logging",
+        "//src:logging",
+        "//src:smart_data_hub",
+    ],
+)
