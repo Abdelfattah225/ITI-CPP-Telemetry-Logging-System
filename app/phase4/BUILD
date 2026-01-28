@@ -20,7 +20,6 @@ cc_binary(
     ],
 )
 
-
 cc_binary(
     name = "main",
     srcs = ["main.cpp"],
@@ -28,5 +27,13 @@ cc_binary(
         "//src:async_logging",
         "//src:logging",
         "//src:smart_data_hub",
+    ],
+)
+
+cc_binary(
+    name = "test_thread_pool",
+    srcs = ["test_thread_pool.cpp"],
+    deps = [
+        "//src:async_logging",
     ],
 )

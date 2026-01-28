@@ -16,11 +16,18 @@ cc_library(
 )
 
 cc_library(
+    name = "ThreadPool",
+    hdrs = ["ThreadPool.hpp"],
+    includes = ["."],
+)
+
+cc_library(
     name = "async_logging_hdrs",
     hdrs = [
         "RingBuffer.hpp",
         "ThreadSafeRingBuffer.hpp",
         "AsyncLogManager.hpp",
+        "ThreadPool.hpp",
     ],
     includes = ["."],
     deps = [
