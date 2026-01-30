@@ -1,10 +1,4 @@
-# Phase 4 Documentation & Unit Tests
 
-## Part 1: Create README.md
-
-Create file: `docs/04-Asynchronous-Logging/README.md`
-
-```markdown
 # Phase 4: Asynchronous Logging
 
 ## Overview
@@ -337,4 +331,4 @@ bazel run //app/phase4:main
 
 ---
 ## UML Diagram
-!()[Phase4_Asynchronous_Logging.png]
+![](Phase4_Asynchronous_Logging.png)
