@@ -3,6 +3,7 @@
 #include "ITelemetrySource.hpp"
 #include "SafeFile.hpp"
 #include <fcntl.h>
+#include <vsomeip/application.hpp>
 namespace SmartDataHub
 {
 
