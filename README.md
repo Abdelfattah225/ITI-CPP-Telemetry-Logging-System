@@ -14,7 +14,6 @@ A scalable, multi-threaded logging system written in Modern C++17. Designed with
 - ✅ SOME/IP integration with vSOME/IP
 - ✅ Runtime Configuration using JSON
 - ✅ Façade Pattern for simplified usage
-- 🔄 DLT logging support (Phase 6)
 
 ## System Overview
 
@@ -67,7 +66,6 @@ A scalable, multi-threaded logging system written in Modern C++17. Designed with
 | [Phase 4](docs/04-AsyncLogging//README.md) | Asynchronous Logging with ThreadPool | ✅ Complete |
 | [Phase 5](docs/05-Telemetry-Over-Network/README.md) | Telemetry Over Network (vSOME/IP) | ✅ Complete |
 | [Phase 6](docs/06-System-Wrap-Up/README.md) | System Wrap Up (Façade & Configuration) | ✅ Complete |
-| Phase 7 | Performance Optimization and Benchmarking | 🔄 Planned |
 
 ## Topics Covered
 
@@ -207,15 +205,6 @@ ITI_Cpp_LogLog_Project/
 | RingBuffer push/pop | O(1) | Circular buffer operations |
 | ThreadPool enqueue | O(1) | Amortized, queue insertion |
 | Sink write | O(n) | Parallel via ThreadPool |
-
-## Upcoming Features (Phase 7+)
-
-- [x] SOME/IP integration with vsomeip
-- [x] Configuration file support
-- [ ] Remote logging capabilities (Cloud/Socket)
-- [ ] DLT (Diagnostic Log and Trace) support
-- [ ] Log filtering and routing
-- [ ] Performance benchmarking suite
 
 ## Author
 
